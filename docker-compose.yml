@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: chat-redis
+    volumes:
+      - chat_redis_volume:/var/lib/redis/data/
+    ports:
+      - "6355:6379"
+    networks:
+      - chat-network
+
+
+volumes:
+  chat_redis_volume:
+
+networks:
+  chat-network:
