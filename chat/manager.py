@@ -4,7 +4,7 @@ from typing import Optional
 import httpx
 from fastapi import WebSocket
 
-from settings import DjangoServerSettings
+from .settings import DjangoServerSettings
 
 
 class ConnectionManager:
@@ -25,8 +25,9 @@ class ConnectionManager:
         msg = json.loads(msg.decode("utf-8"))
         receiver_ids = msg.get("receiver_ids", [])
         sender_id = msg.get("sender_id")
+        message_obj = msg.get("message", {})
         if user_id == sender_id or user_id in receiver_ids:
-            await websocket.send_json(msg)
+            await websocket.send_json(message_obj)
 
     @staticmethod
     async def check_auth(token: str, django_settings: DjangoServerSettings) -> Optional[int]:

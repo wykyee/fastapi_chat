@@ -1,11 +1,10 @@
 import aioredis
 from fastapi import FastAPI, WebSocket, Depends, HTTPException
-from fastapi.responses import HTMLResponse
 from starlette.websockets import WebSocketDisconnect
 
-from chat.manager import connection_manager
-from chat.redis import connect_redis
-from settings import DjangoServerSettings, get_django_settings, BrokerSettings, get_broker_settings
+from .manager import connection_manager
+from .redis import connect_redis
+from .settings import DjangoServerSettings, get_django_settings, BrokerSettings, get_broker_settings
 
 
 app = FastAPI()

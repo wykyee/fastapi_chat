@@ -1,6 +1,6 @@
 import aioredis
 
-from settings import get_broker_settings
+from .settings import get_broker_settings
 
 
 async def connect_redis() -> aioredis.Redis:

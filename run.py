@@ -1,6 +1,6 @@
 import uvicorn
 
-from settings import UvicornSettings
+from chat.settings import UvicornSettings
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ class UvicornSettings(BaseSettings):
 class BrokerSettings(BaseSettings):
     host: str = getenv("CHAT_BROKER_HOST", "0.0.0.0")
     port: int = getenv("CHAT_BROKER_PORT", 6355)
-    channel_name: str = getenv("CHAT_CHANNEL_NAME", "chat")
+    channel_name: str = getenv("CHAT_CHANNEL_NAME", "")
 
 
 class DjangoServerSettings(BaseSettings):
