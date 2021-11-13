@@ -1,4 +1,4 @@
-##Usage
+## Usage
 
 1. Set env variables for chat service
 2. Run `python run.py` on your server. Chat will be available on endpoint ws://`host`:`port`/chat
@@ -12,7 +12,7 @@ Queue's message must be like:
 - `message` - non-required, object that will be sent to users
 
 
-##Env variables
+## Env variables
 *default in ()
 - `CHAT_HOST` - host for running uvicorn application (0.0.0.0)
 - `CHAT_PORT` - post for running uvicorn application (8088)
