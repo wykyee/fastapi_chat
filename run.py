@@ -3,5 +3,9 @@ import uvicorn
 from chat.settings import UvicornSettings
 
 
-if __name__ == "__main__":
+def main():
     uvicorn.run(**UvicornSettings().dict())
+
+
+if __name__ == "__main__":
+    main()
