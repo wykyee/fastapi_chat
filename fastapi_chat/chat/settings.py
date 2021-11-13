@@ -4,11 +4,15 @@ from pydantic import BaseSettings
 
 
 class UvicornSettings(BaseSettings):
-    app: str = "chat.app:app"
+    app: str = "fastapi_chat.chat.app:app"
     host: str = getenv("CHAT_HOST", "0.0.0.0")
     port: int = getenv("CHAT_PORT", 8088)
     workers: int = getenv("CHAT_WORKERS", 1)
     reload: bool = True
+
+
+class UvicornDevSettings(UvicornSettings):
+    app: str = "chat.app:app"
 
 
 class BrokerSettings(BaseSettings):

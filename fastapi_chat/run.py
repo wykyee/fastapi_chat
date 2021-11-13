@@ -1,6 +1,9 @@
 import uvicorn
 
-from chat import settings
+try:
+    from fastapi_chat.chat import settings
+except ModuleNotFoundError:
+    from chat import settings
 
 
 def main():
@@ -8,4 +11,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    uvicorn.run(**settings.UvicornDevSettings().dict())
