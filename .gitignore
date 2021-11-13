@@ -1,2 +1,5 @@
 env/
 .idea/
+dist/
+__pycache__/
+fastapi_chat.egg-info/
