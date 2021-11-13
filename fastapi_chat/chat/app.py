@@ -3,7 +3,7 @@ from fastapi import FastAPI, WebSocket, Depends, HTTPException
 from starlette.websockets import WebSocketDisconnect
 
 from .manager import connection_manager
-from .redis import connect_redis
+from .redis_connector import connect_redis
 from .settings import DjangoServerSettings, get_django_settings, BrokerSettings, get_broker_settings
 
 
