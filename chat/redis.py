@@ -1,14 +1,8 @@
-from typing import Union
-
 import aioredis
 
-
-async def connect_redis(host: str, port: Union[str, int]) -> aioredis.Redis:
-    redis = await aioredis.from_url(f"redis://{host}:{port}")
-    return redis
+from settings import get_broker_settings
 
 
-async def subscribe_channel(redis: aioredis.Redis, channel_name: str) -> aioredis.client.PubSub:
-    channel = redis.pubsub()
-    await channel.subscribe(channel_name)
-    return channel
+async def connect_redis() -> aioredis.Redis:
+    settings = get_broker_settings()
+    return await aioredis.create_redis(f"redis://{settings.host}:{settings.port}")

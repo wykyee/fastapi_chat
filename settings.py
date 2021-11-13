@@ -6,7 +6,7 @@ from pydantic import BaseSettings
 class UvicornSettings(BaseSettings):
     app: str = "chat.app:app"
     host: str = getenv("CHAT_HOST", "0.0.0.0")
-    port: int = getenv("CHAT_PORT", 8000)
+    port: int = getenv("CHAT_PORT", 8088)
     workers: int = getenv("CHAT_WORKERS", 1)
     reload: bool = True
 
@@ -21,6 +21,7 @@ class DjangoServerSettings(BaseSettings):
     base_url: str = getenv("CHAT_DJANGO_BASE_URL", "http://localhost:4114/")
     get_user_url: str = getenv("CHAT_DJANGO_GET_USER_URL", base_url + "api/v1/me/")
     token_type: str = getenv("CHAT_DJANGO_TOKEN_TYPE", "Bearer")
+    user_response_id_field: str = getenv("CHAT_DJANGO_USER_RESPONSE_ID_FIELD", "id")
 
 
 @lru_cache

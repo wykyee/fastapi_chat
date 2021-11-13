@@ -1,50 +1,43 @@
-import asyncio
-from dataclasses import dataclass
+import json
+from typing import Optional
 
 import httpx
 from fastapi import WebSocket
-from fastapi.exceptions import WebSocketRequestValidationError
 
 from settings import DjangoServerSettings
 
 
-@dataclass
-class UserWebsocket:
-    user_id: int
-    websocket: WebSocket
-
-
 class ConnectionManager:
-    def __init__(self):
-        self.active_connections: list[UserWebsocket] = []
-
-    async def connect(self, websocket: WebSocket, token: str, django_settings: DjangoServerSettings):
-        user = await self.__check_auth(token, django_settings)
+    @staticmethod
+    async def connect(websocket: WebSocket):
         await websocket.accept()
-        self.active_connections.append(UserWebsocket(user["id"], websocket))
-
-    async def disconnect(self, websocket: WebSocket):
-        for i, connection in enumerate(self.active_connections):
-            if connection.websocket == websocket:
-                self.active_connections.pop(i)
-                break
-
-    async def broadcast(self, message: str, user_ids: list[int]):
-        for connection in self.active_connections:
-            if connection.user_id in user_ids:
-                await connection.websocket.send_text(message)
 
     @staticmethod
-    async def __check_auth(token: str, django_settings: DjangoServerSettings) -> dict:
+    async def disconnect(websocket: WebSocket):
+        await websocket.close()
+
+    @staticmethod
+    async def send_if_needed(user_id: int, msg: bytes, websocket: WebSocket):
+        """
+        Sends via websocket json, if it directed to current user
+        (user's id is sender's id or in receivers' ids)
+        """
+        msg = json.loads(msg.decode("utf-8"))
+        receiver_ids = msg.get("receiver_ids", [])
+        sender_id = msg.get("sender_id")
+        if user_id == sender_id or user_id in receiver_ids:
+            await websocket.send_json(msg)
+
+    @staticmethod
+    async def check_auth(token: str, django_settings: DjangoServerSettings) -> Optional[int]:
+        """
+        Sends request to django server with token to ensure connection and get user's id.
+        """
         async with httpx.AsyncClient() as client:
             token = f"{django_settings.token_type} {token}"
-            task = await asyncio.gather(
-                client.get(django_settings.get_user_url, headers={"Authorization": token})
-            )
-        response = task[0]
-        if response.status_code != 200:
-            raise WebSocketRequestValidationError(errors=["token must be provided"])
-        return response.json()
+            response = await client.get(django_settings.get_user_url, headers={"Authorization": token})
+        if response.status_code == 200:
+            return response.json().get(django_settings.user_response_id_field)
 
 
 connection_manager = ConnectionManager()
