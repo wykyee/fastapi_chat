@@ -9,6 +9,7 @@ class UvicornSettings(BaseSettings):
     port: int = getenv("CHAT_PORT", 8088)
     workers: int = getenv("CHAT_WORKERS", 1)
     reload: bool = True
+    log_level: str = "error"
 
 
 class UvicornDevSettings(UvicornSettings):

@@ -11,6 +11,23 @@ services:
     networks:
       - chat-network
 
+  chat:
+    container_name: chat
+    build:
+      context: .
+    command: python3 /app/fastapi_chat/run.py
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    networks:
+      - chat-network
+    ports:
+      - "8088:8088"
+    environment:
+      - CHAT_BROKER_HOST=chat-redis
+      - CHAT_BROKER_PORT=6379
+
 
 volumes:
   chat_redis_volume:

@@ -7,6 +7,7 @@ except ModuleNotFoundError:
 
 
 def main():
+    print(*settings.UvicornSettings().dict())
     uvicorn.run(**settings.UvicornSettings().dict())
 
 
