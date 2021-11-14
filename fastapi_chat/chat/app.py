@@ -1,4 +1,3 @@
-import aioredis
 from fastapi import FastAPI, WebSocket, Depends, HTTPException
 from starlette.websockets import WebSocketDisconnect
 
@@ -8,13 +7,12 @@ from .settings import DjangoServerSettings, get_django_settings, BrokerSettings,
 
 
 app = FastAPI()
-REDIS: aioredis.Redis
 
 
 @app.on_event("startup")
 async def startup_event():
-    global REDIS
-    REDIS = await connect_redis()
+    redis = await connect_redis()
+    app.state.redis = redis
 
 
 @app.websocket("/chat")
@@ -29,7 +27,7 @@ async def websocket_endpoint(
         raise HTTPException(status_code=401, detail="Invalid token")
     await connection_manager.connect(websocket)
 
-    (channel,) = await REDIS.subscribe(broker_settings.channel_name)
+    (channel,) = await app.state.redis.subscribe(broker_settings.channel_name)
     try:
         while await channel.wait_message():
             msg = await channel.get()
