@@ -14,6 +14,7 @@ class UvicornSettings(BaseSettings):
 
 class UvicornDevSettings(UvicornSettings):
     app: str = "chat.app:app"
+    log_level = "info"
 
 
 class BrokerSettings(BaseSettings):

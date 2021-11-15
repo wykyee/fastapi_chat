@@ -20,7 +20,7 @@ Queue's message must be like:
 - `CHAT_BROKER_HOST` - host for redis to subscribe to the queue (0.0.0.0)
 - `CHAT_BROKER_PORT` - port for redis to subscribe to the queue (6300)
 - `CHAT_BROKER_DB` - db for redis to subscribe to the queue (2)
-- `CHAT_CHANNEL_NAME` - queue's name to subscribe to (chat)
+- `CHAT_CHANNEL_NAME` - queue's name to subscribe to (chat_channel)
 - `CHAT_DJANGO_BASE_URL` - base url of django's application (http://localhost:4114/)
 - `CHAT_DJANGO_GET_USER_URL` - django's endpoint to get current user's information (api/v1/me)
 - `CHAT_DJANGO_TOKEN_TYPE` - jwt token's start (Bearer) 
